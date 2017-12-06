@@ -1,8 +1,9 @@
-// const fs = require('fs');
+const fs = require('fs');
 const path = require('path');
 
-function public(req, res) {
+function publicWay(req, res) {
     const extension = path.extname(req.url);
+    const filename = req.url.slice(1);
     let contentType = '';
 
     /*определяем content type*/
@@ -24,11 +25,11 @@ function public(req, res) {
     }
 
     /*устанавливает Content Type по умолчанию */
-    res.statusCode('200');
+    res.statusCode = 200;
     res.setHeader('Content-Type', contentType);
 
     /*считываем файл с диска с помощью потока*/
-    const stream = fs.createReadStream(path.join(__dirname, req.url));
+    const stream = fs.createReadStream(path.resolve('public', filename));
 
     /*соединяем поток записи с потоком чтения*/
     stream.pipe(res);
@@ -45,4 +46,4 @@ function public(req, res) {
     });
 }
 
-module.exports = public;
+module.exports = publicWay;
